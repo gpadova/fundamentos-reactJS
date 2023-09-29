@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import CheckedCircle from "../assets/CheckedCircle";
 import TrashCan from "../assets/TrashCan";
+import { useState } from "react";
 
 interface ConcludedTaskProps {
   description: string;
@@ -13,19 +14,26 @@ function ConcludedTask({
   description,
   id,
   toggleConcluded,
-  deleteTask
+  deleteTask,
 }: ConcludedTaskProps) {
+  const defaultColor = "#808080";
+  const dangerColor = "#E25858";
+  const [hoverTrash, setHoverTrash] = useState(false);
   return (
     <Task>
-      <div onClick={() => toggleConcluded(id)}>
+      <div className="circle" onClick={() => toggleConcluded(id)}>
         <CheckedCircle />
       </div>
       <div className="task-description">
         <p>{description}</p>
       </div>
-      <div onClick={() => deleteTask(id)}>
-
-      <TrashCan />
+      <div
+        onMouseEnter={() => setHoverTrash(true)}
+        onMouseLeave={() => setHoverTrash(false)}
+        className="trash"
+        onClick={() => deleteTask(id)}
+      >
+        <TrashCan fill={hoverTrash ? dangerColor : defaultColor} />
       </div>
     </Task>
   );
@@ -52,5 +60,14 @@ const Task = styled.div`
       line-height: 140%;
       text-decoration-line: line-through;
     }
+  }
+
+  .trash:hover {
+    cursor: pointer;
+    color: var(--danger);
+  }
+
+  .circle:hover {
+    cursor: pointer;
   }
 `;

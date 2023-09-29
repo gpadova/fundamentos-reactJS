@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import TrashCan from "../assets/TrashCan";
 import Circle from "../assets/Circle";
+import { useState } from "react";
 
 interface NotConcludedTaskProps {
   description: string;
@@ -15,16 +16,19 @@ function NotConcludedTask({
   toggleConcluded,
   deleteTask,
 }: NotConcludedTaskProps) {
+  const defaultColor = "#808080"
+  const dangerColor = "#E25858"
+  const [hoverTrash, setHoverTrash] = useState(false)
   return (
     <Task>
-      <div onClick={() => toggleConcluded(id)}>
+      <div className="circle" onClick={() => toggleConcluded(id)}>
         <Circle />
       </div>
       <div className="task-description">
         <p>{description}</p>
       </div>
-      <div onClick={() => deleteTask(id)}>
-        <TrashCan />
+      <div onMouseEnter={() => setHoverTrash(true)} onMouseLeave={() => setHoverTrash(false)} className="trash" onClick={() => deleteTask(id)}>
+        <TrashCan fill={hoverTrash ? dangerColor : defaultColor}/>
       </div>
     </Task>
   );
@@ -50,5 +54,12 @@ const Task = styled.div`
       font-size: 14px;
       line-height: 140%;
     }
+  }
+  .trash:hover {
+    cursor: pointer;
+  }
+
+  .circle:hover {
+    cursor: pointer;
   }
 `;
